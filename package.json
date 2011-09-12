@@ -1,0 +1,17 @@
+{
+   "name": "R.js",
+   "version": "0.1.0",
+   "description": "Internationalisation Library",
+   "homepage": "http://keithamus.github.com/R.js",
+   "keywords": [ "i18n", "R.js", "server", "browser" ],
+   "maintainers": [
+        {
+            "name": "Keith Cirkel",
+            "email": "rjs@keithcirkel.co.uk",
+            "web": "http://keithcirkel.co.uk" 
+        } 
+   ],
+   "licenses": [ { "type": "MIT", "url": "http://www.opensource.org/licenses/mit-license.php" } ],
+   "repositories": [ { "type": "git", "url": "http://github.com/keithamus/R.js" } ],
+   "main": "R.js"
+}

@@ -1,7 +1,7 @@
 /*jslint white: true, browser: true, devel: true, onevar: true, undef: true,
  nomen: true, eqeqeq: true, plusplus: false, bitwise: true, regexp: true,
- newcap: true, immed: true, maxlen: 80, indent: 4 */
-/*globals window: false*/
+ newcap: true, immed: true, maxlen: 100, indent: 4 */
+/*globals module: false*/
 /*
  * R.js - Internationalisation Library
  *
@@ -34,184 +34,172 @@
  * THE SOFTWARE.
  *
  */
-(function () {
-
-    // this binds to `window` on browser, `global` on server
-    var root = this,
-
-    R = function (id, variables) {
-        // If we haven't initialised our variables etc, then do so.
-        if (!root.R.lang) {
-            root.R.init();
-        }
-        // In the case we've been given comma separated arguments, we should
-        // load them into an array and send them to render
-        var args = Array.prototype.slice.call(arguments);
-        args.shift();
-        if (args.length > 1) {
-            return root.R.render(id, args);
-
-        // Otherwise just send the `variables` var.
-        } else {
-            return root.R.render(id, [variables]);
-        }
-    };
-
-    R.init = function (string_id) {
-        //Initialise some variables.
-        root.R.locales = {};
-        root.R.lang = 'en-GB';
-    };
-
-    /*
-     * Utility functions
-     */
-
-    R.realTypeOf = function (v) {
-        if (typeof(v) === "object") {
-            if (v === null) {
-                return "null";
-            } else if (v.constructor === ([]).constructor) {
-                return "array";
-            } else if (v.constructor === (new Date()).constructor) {
-                return "date";
-            } else if (v.constructor === (/^$/).constructor) {
-                return "regex";
-            } else {
-                return "object";
-            }
-        }
-        return typeof(v);
-    };
-
-    R.isPlural = function (obj) {
-        // Does it have both 'one' and 'plural'?
-        if (root.R.realTypeOf(obj) === 'object') {
-            return obj.hasOwnProperty('one') && obj.hasOwnProperty('plural');
-        }
-        return false;
-    };
-
-    R.whichPlural = function (obj, args) {
-        // If we have no integers, or the integer is lower than two, singular!
-        if (args.i.length === 0 || args.i[0] < 2) {
-            return obj.one;
-        }
-        // Otherwise, plural!
-        return obj.plural;
-    };
-
-    /*
-     * Core functions
-     */
-
-    // Use R.registerLocale to bind new langauges to R.
-    R.registerLocale = function (locale, object) {
-        //If we haven't initialised our variables etc, then do so.
-        if (!root.R.lang) {
-            root.R.init();
-        }
-        //Throw the object we've been given into locales.
-        root.R.locales[locale] = object;
-    };
-
-    R.render = function (id, args) {
-        var n, i, o, tmp = root.R.locales;
-
-        // Make sure that the language object we're expecting is there
-        if (!tmp[root.R.lang]) {
-            throw new Error('Undefined language ' + root.R.lang);
-        } else {
-            tmp = tmp[root.R.lang];
-        }
-
-        // If turn ID into an array of split .s or just itself
-        n = id.indexOf('.') > 0 ? id.toString().split('.') : [id];
-
-        // Shuffle through `n` until we get to the object they're searching for
-        while ((i = n.shift())) {
-            if (tmp[i]) {
-                tmp = tmp[i];
-            } else {
-                throw new Error('Undefined index ' + i);
-            }
-        }
-
-        // If this is just a plain string, and we've no arguments, let's return
-        if (typeof tmp === 'string' && (!args || args.length === 0)) {
-            return tmp;
-        }
-
-        // Ok, we do have args, so lets parse them.
-        args = root.R.parseVariables(args);
-
-        // Check if we're dealing with a plural, and return appropriately.
-        if (root.R.isPlural(tmp)) {
-            return root.R.format(root.R.whichPlural(tmp, args), args);
-        }
-
-        return root.R.format(tmp, args);
-    };
-
-    R.parseVariables = function (args, ret) {
-        var i, c, type = root.R.realTypeOf(args);
-
-        // This is our structure for formatting, numbers go in i, string in s,
-        // and the named arguments (i.e %(age)) go in named.
-        if (!ret) {
-            ret = { i: [], s: [], named: {} };
-        }
-
-        //Check args to see what type it is, and add to ret appropriately.
-        if (type === 'number') {
-            ret.i.push(args);
-        } else if (type === 'string') {
-            ret.s.push(args);
-        } else if (type === 'date') {
-            ret.i.push(args.toString());
-        } else if (type === 'object') {
-            for (i in args) {
-                if (args.hasOwnProperty(i) && typeof args[i] !== 'object') {
-                    ret.named[i] = args[i];
+(function (root, exports) {
+    var R = {
+        
+        init: function (lang) {
+            lang = lang || typeof navigator !== "undefined" ? navigator.language : 'en-GB';
+            //Initialise some variables.
+            exports.R.locales = {};
+            exports.R.lang = lang;
+        },
+        
+        realTypeOf: function (v) {
+            if (typeof(v) === "object") {
+                if (v === null) {
+                    return "null";
+                } else if (v.constructor === ([]).constructor) {
+                    return "array";
+                } else if (v.constructor === (new Date()).constructor) {
+                    return "date";
+                } else if (v.constructor === (/^$/).constructor) {
+                    return "regex";
+                } else {
+                    return "object";
                 }
             }
-        } else if (type === 'array') {
-            // Loop through the array, doing what we just did
-            for (i = 0, c = args.length; i < c; ++i) {
-                root.R.parseVariables(args[i], ret);
+            return typeof(v);
+        },
+    
+        render: function (id, args) {
+            if (exports.R.locales && exports.R.locales.hasOwnProperty(exports.R.lang)) {
+                if (exports.R.locales[exports.R.lang].hasOwnProperty(id)) {
+                    id = exports.R.locales[exports.R.lang][id];
+                }
             }
-        }
+            
+            // If we've no arguments, let's return
+            if (!args || args.length === 0) {
+                return id;
+            }
+    
+            // Ok, we do have args, so lets parse them.
+            args = R.parseVariables(args);
+    
+            return R.format(id, args);
+        },
+        
+        parseVariables: function (args, ret) {
+            var i, c, type = R.realTypeOf(args);
+    
+            // This is our structure for formatting, numbers go in i, string in s,
+            // and the named arguments (i.e %(age)) go in named.
+            if (!ret) {
+                ret = { i: [], s: [], named: {} };
+            }
+    
+            //Check args to see what type it is, and add to ret appropriately.
+            switch (type) {
+                case 'number': ret.i.push(args);           break;
+                case 'string': ret.s.push(args);           break;
+                case 'date': ret.i.push(args.toString());  break;
+                case 'object':
+                    for (i in args) {
+                        if (args.hasOwnProperty(i)) {
+                            if (i === 'i' || i === 's') {
+                                R.parseVariables(args[i], ret);
+                            } else {
+                                ret.named[i] = args[i];
+                            }
+                        }
+                    }
+                    break;
+                case 'array':
+                    // Loop through the array, doing what we just did
+                    for (i = 0, c = args.length; i < c; ++i) {
+                        R.parseVariables(args[i], ret);
+                    }
+                    break;
+            }
+    
+            return ret;
+        },
 
-        return ret;
-    };
-
-    R.format = function (s, a) {
-        var i, n, t, l, types = {i: '%i', s: '%s'}, tmp = '';
-        //First we'll add all integers to the pot, then the strings
-        for (t in types) {
-            if (types.hasOwnProperty(t)) {
-                l = types[t].length;
-                for (i in a[t]) {
-                    if (a[t][i]) {
-                        if ((n = s.indexOf(types[t])) > 0) {
-                            s = s.substr(0, n) + a[t][i] + s.substr(n + l);
+        format: function (s, a) {
+            var i, replace, tcount, substrstart, type, l, types = {i: '%i', s: '%s'}, tmp = '';
+            //First we'll add all integers to the pot, then the strings
+            for (type in types) {
+                if (types.hasOwnProperty(type)) {
+                    tcount = (s.match(new RegExp(types[type], 'g')) || []).length;
+                    for (i = 0; i < tcount; ++i) {
+                        replace = a[type][i] || replace || false;
+                        if (replace) {
+                            if ((substrstart = s.indexOf(types[type])) >= 0) {
+                                s = s.substr(0, substrstart) + replace + s.substr(substrstart + 2);
+                            }
                         }
                     }
                 }
+                replace = false;
             }
-        }
-
-        //Now to loop through the named arguments!
-        for (i in a.named) {
-            if (a.named.hasOwnProperty(i)) {
-                t = new RegExp("%\\(" + i + "\\)", 'g');
-                s = s.replace(t, a.named[i]);
+    
+            //Now to loop through the named arguments!
+            for (i in a.named) {
+                if (a.named.hasOwnProperty(i)) {
+                    t = new RegExp("%\\(" + i + "\\)", 'g');
+                    s = s.replace(t, a.named[i]);
+                }
             }
+    
+            return s;
         }
+    };
+    
+    /*
+     * R
+     * Take an `id` from the registered locales and return the string including any variables.
+     * @param {String} id The ID of the
+     * @param {Mixed} variables 
+     */
+    exports.R = function (id, variables) {
+        // If we haven't initialised our variables etc, then do so.
+        if (!exports.R.lang) {
+            R.init();
+        }
+        
+        if (arguments.length > 1) {
+            
+            // In the case we've been given comma separated arguments, we should
+            // load them into an array and send them to render
+            var args = Array.prototype.slice.call(arguments);
+            args.shift();
+        
+            return R.render(id, args);
 
-        return s;
+        // Otherwise just send the `variables` var.
+        } else {
+            return R.render(id, [variables]);
+        }
+    };
+    
+    /*
+     * R
+     * Apply `object` of strings to `locale` for use with the main function, R
+     * @param {String} locale The locale of the language object, e.g en-US
+     * @param {Object} A flat object of strings
+     */
+    exports.R.registerLocale = function (locale, object) {
+        //If we haven't initialised our variables etc, then do so.
+        if (!exports.R.lang) {
+            R.init();
+        }
+        //Throw the object we've been given into locales.
+        exports.R.locales[locale] = object;
+        return this;
+    };
+    
+    /*
+     * R
+     * Set the `locale` to a different locale
+     * @param {String} locale The locale that should be set
+     */
+    exports.R.setLocale = function (locale) {
+        //If we haven't initialised our variables etc, then do so.
+        if (!exports.R.lang) {
+            R.init();
+        }
+        exports.R.lang = locale;
+        return this;
     };
 
-    root.R = R;
-
-}());
+}(this, typeof module !== 'undefined' && module.exports ? module.exports : this));
