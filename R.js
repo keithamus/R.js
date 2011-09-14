@@ -45,20 +45,7 @@
         },
         
         realTypeOf: function (v) {
-            if (typeof(v) === "object") {
-                if (v === null) {
-                    return "null";
-                } else if (v.constructor === ([]).constructor) {
-                    return "array";
-                } else if (v.constructor === (new Date()).constructor) {
-                    return "date";
-                } else if (v.constructor === (/^$/).constructor) {
-                    return "regex";
-                } else {
-                    return "object";
-                }
-            }
-            return typeof(v);
+            return Object.prototype.toString.call(v).match(/\w+/g)[1].toLowerCase();
         },
     
         render: function (id, args) {
