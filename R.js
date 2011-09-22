@@ -1,4 +1,4 @@
-/*jslint white: true, browser: true, devel: true, onevar: true, undef: true,
+/*jslint white: false, browser: true, devel: true, onevar: true, undef: true,
  nomen: true, eqeqeq: true, plusplus: false, bitwise: true, regexp: true,
  newcap: true, immed: true, maxlen: 100, indent: 4 */
 /*globals module: false*/
@@ -34,14 +34,24 @@
  * THE SOFTWARE.
  *
  */
-(function (root, exports) {
-    var R = {
+(function (exports) {
+    var eR,
+        R = {
         
         init: function (lang) {
             lang = lang || typeof navigator !== "undefined" ? navigator.language : 'en-GB';
             //Initialise some variables.
-            exports.R.locales = {};
-            exports.R.lang = lang;
+            eR.locales = {};
+            eR.navLang = lang;
+        },
+        
+        slice: function (a) {
+            return Array.prototype.slice.call(a);
+        },
+        
+        AinOf: function (a, v) {
+            for (var i = 0, c = a.length; i < c; ++i) if (a[i] === v) return i;
+            return -1;
         },
         
         realTypeOf: function (v) {
@@ -49,9 +59,9 @@
         },
     
         render: function (id, args) {
-            if (exports.R.locales && exports.R.locales.hasOwnProperty(exports.R.lang)) {
-                if (exports.R.locales[exports.R.lang].hasOwnProperty(id)) {
-                    id = exports.R.locales[exports.R.lang][id];
+            if (eR.locales && eR.locales.hasOwnProperty(eR.lang)) {
+                if (eR.locales[eR.lang].hasOwnProperty(id)) {
+                    id = eR.locales[eR.lang][id];
                 }
             }
             
@@ -103,7 +113,7 @@
         },
 
         format: function (s, a) {
-            var i, replace, tcount, substrstart, type, l, types = {i: '%i', s: '%s'}, tmp = '';
+            var i, replace, tcount, substrstart, type, l, types = {i: '%i', s: '%s'}, tmp = '', t;
             //First we'll add all integers to the pot, then the strings
             for (type in types) {
                 if (types.hasOwnProperty(type)) {
@@ -138,9 +148,9 @@
      * @param {String} id The ID of the
      * @param {Mixed} variables 
      */
-    exports.R = function (id, variables) {
+    eR = function (id, variables) {
         // If we haven't initialised our variables etc, then do so.
-        if (!exports.R.lang) {
+        if (!eR.lang) {
             R.init();
         }
         
@@ -148,7 +158,7 @@
             
             // In the case we've been given comma separated arguments, we should
             // load them into an array and send them to render
-            var args = Array.prototype.slice.call(arguments);
+            var args = R.slice(arguments);
             args.shift();
         
             return R.render(id, args);
@@ -160,33 +170,61 @@
     };
     
     /*
-     * R
+     * R.registerLocale
      * Apply `object` of strings to `locale` for use with the main function, R
      * @param {String} locale The locale of the language object, e.g en-US
      * @param {Object} A flat object of strings
      */
-    exports.R.registerLocale = function (locale, object) {
+    eR.registerLocale = function (locale, object) {
         //If we haven't initialised our variables etc, then do so.
-        if (!exports.R.lang) {
+        if (!eR.lang) {
             R.init();
         }
         //Throw the object we've been given into locales.
-        exports.R.locales[locale] = object;
-        return this;
+        eR.locales[locale] = object;
+        eR.setLocale(eR.navlang);
+        return eR;
     };
+    
+    /*
+     * R.localeOrder
+     * Change the order of locales, to enable negotiation of a locale with setLocale
+     * @param {String} locale The locale that should be set
+     */
+    eR.localeOrder = function () {
+        eR.preferredLocales = R.slice(arguments);
+        return eR.setLocale(eR.lang);
+    },
     
     /*
      * R
      * Set the `locale` to a different locale
      * @param {String} locale The locale that should be set
      */
-    exports.R.setLocale = function (locale) {
+    eR.setLocale = function (locale, force) {
         //If we haven't initialised our variables etc, then do so.
-        if (!exports.R.lang) {
+        if (!eR.lang) {
             R.init();
         }
-        exports.R.lang = locale;
-        return this;
+        if (force) {
+            eR.lang = locale;
+            return eR;
+        }
+        var i = 0, key, locales = eR.preferredLocales;
+        if (!locales) {
+            locales = [];
+            for (key in eR.locales) {
+                if (eR.locales.hasOwnProperty(key)) locales.push(key);
+            }
+        }
+        if ((key = R.AinOf(locales, locale)) > 0) {
+            eR.lang = locales[key];
+            return eR;
+        }
+        eR.lang = locales[0] || locale;
+        return eR;
     };
+    
+    exports.R = eR;
 
-}(this, typeof module !== 'undefined' && module.exports ? module.exports : this));
+}(typeof module !== 'undefined' && module.exports ? module.exports : this));

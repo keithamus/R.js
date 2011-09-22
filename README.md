@@ -3,9 +3,11 @@ R.js
 
 R.js is a simple i18n framework for Javascript, using CommonJS. R.js should work in both browsers, and on Node.js, providing internationalisation capabilities to both.
 
-R.js is tiny, at less than 800 bytes minified and gzipped. R.js has no dependencies, but can be used easily with any other libraries you wish. R.js binds itself to window.R, or global.R on the server side.
+R.js is tiny, at less than 900 bytes minified and gzipped (<2kb minified). R.js has no dependencies, but can be used easily with any other libraries you wish. R.js binds itself to window.R, or global.R on the server side.
 
 Soon, R.js will be able to convert from XLIFF format, into R.js files, which can be easily compacted with R.js to provide one single small file for all your i18n needs.
+
+---
 
 To use R.js, simply register a language file like so:
 

@@ -153,3 +153,19 @@ test('returning strings with mixed strings, ints and objects', function () {
     equal(R('withIntStringObjMixed', { i: [1], s: 'bar', string: 'biz' }), '1 sample biz with 1 biz bar');
     equal(R('withIntStringObjMixed', { string: 'test' }, { i: [1] }, { s: 'bar' }), '1 sample test with 1 test bar');
 });
+
+test('locale negotiation', function () {
+    R.localeOrder('en-GB', 'en-US', 'zu');
+    
+    R.setLocale('zu');
+    equal(R.lang, 'zu', 'Local is zu');
+    
+    R.setLocale('en-US');
+    equal(R.lang, 'en-US', 'Local is en-US');
+    
+    R.setLocale('da');
+    equal(R.lang, 'en-GB', 'Local is en-GB (first preferred language in locale order)');
+    
+    R.setLocale('da', true);
+    equal(R.lang, 'da', 'Local is da (forced)'); 
+});
