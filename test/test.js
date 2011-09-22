@@ -169,3 +169,12 @@ test('locale negotiation', function () {
     R.setLocale('da', true);
     equal(R.lang, 'da', 'Local is da (forced)'); 
 });
+
+test('test noConflict', function () {
+    
+    var curR = R, noConf = R.noConflict();
+    
+    equal(R, undefined, 'window.R before Rjs was never set - undefined');
+    
+    deepEqual(curR, noConf, 'noConflict should return R.js');
+});

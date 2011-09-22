@@ -35,7 +35,7 @@
  *
  */
 (function (exports) {
-    var eR,
+    var oldR = exports.R, eR,
         R = {
         
         init: function (lang) {
@@ -224,6 +224,8 @@
         eR.lang = locales[0] || locale;
         return eR;
     };
+    
+    eR.noConflict = function () { exports.R = oldR; return eR; }
     
     exports.R = eR;
 

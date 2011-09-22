@@ -1,9 +1,9 @@
 {
    "name": "R.js",
-   "version": "0.1.0",
-   "description": "Internationalisation Library",
-   "homepage": "http://keithamus.github.com/R.js",
-   "keywords": [ "i18n", "R.js", "server", "browser" ],
+   "version": "0.1.2",
+   "description": "R.js is a simple i18n framework for Javascript, both in browser and in node",
+   "homepage": "http://github.com/keithamus/R.js",
+   "keywords": [ "i18n", "R.js", "server", "browser", "node", "ender" ],
    "maintainers": [
         {
             "name": "Keith Cirkel",
@@ -12,6 +12,7 @@
         } 
    ],
    "licenses": [ { "type": "MIT", "url": "http://www.opensource.org/licenses/mit-license.php" } ],
-   "repositories": [ { "type": "git", "url": "http://github.com/keithamus/R.js" } ],
-   "main": "R.js"
+   "repositories": [ { "type": "git", "url": "https://github.com/keithamus/R.js" } ],
+   "main": "./R.js",
+   "ender": "./R.enderBridge.js"
 }
