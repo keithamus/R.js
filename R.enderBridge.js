@@ -1,7 +1,7 @@
 /*jslint white: false, browser: true, devel: true, onevar: true, undef: true,
  nomen: true, eqeqeq: true, plusplus: false, bitwise: true, regexp: true,
  newcap: true, immed: true, maxlen: 100, indent: 4 */
-/*globals ender: false, R: false */
+/*globals ender: false, R: false, require: false */
 /*
  * R.enderBridge.js - Internationalisation Library, bridge to Ender.js
  *
@@ -34,9 +34,9 @@
  * THE SOFTWARE.
  *
  */
-(function ($) {  
+(function ($, r) {  
     $.ender({
-        R: R.noConflict()
+        R: r('R.js').R
     });
 
-}(ender));
+}(ender, require));
