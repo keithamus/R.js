@@ -1,93 +1,224 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset='utf-8'>
+    <meta charset='utf-8'>
+    <title>R.js - i18n for JavaScript</title>
+    <link href='http://fonts.googleapis.com/css?family=IM+Fell+French+Canon+SC' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+        body {
+            margin-top: 1.0em;
+            background: #444;
+            color: #453A37;
+            margin: 0;
+            padding: 0;
+            font-size: 18px;
+        }
+        .r {
+            color: #F04144;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            text-shadow: -1px 1px #ccc;
+        }
+        .r, h1, h2, h3, h4, h5, h6 {
+            font-family: 'IM Fell French Canon SC', serif;
+            margin: 20px 0;
+        }
+        h1 { font-size: 48px; }
+        h6 { margin: 0; }
+        a {
+            color: #89575B;
+            text-decoration: none;
+            border-bottom: 1px dotted #89575B;
+        }
+        a.img {
+            border: 0;
+        }
+        #container {
+            background: #F8F9F2;
+            background-image: linear-gradient(left , rgb(239,240,231) 0%, rgb(248,249,242) 50%, rgb(239,240,231) 100%);
+            background-image: -o-linear-gradient(left , rgb(239,240,231) 0%, rgb(248,249,242) 50%, rgb(239,240,231) 100%);
+            background-image: -moz-linear-gradient(left , rgb(239,240,231) 0%, rgb(248,249,242) 50%, rgb(239,240,231) 100%);
+            background-image: -webkit-linear-gradient(left , rgb(239,240,231) 0%, rgb(248,249,242) 50%, rgb(239,240,231) 100%);
+            background-image: -ms-linear-gradient(left , rgb(239,240,231) 0%, rgb(248,249,242) 50%, rgb(239,240,231) 100%);
+            margin: 0 20px;
+            padding: 40px;
+            border: 1px solid #fff;
+            border-top: 0;
+            border-bottom: 0;
+            box-shadow: 0 -10px 20px #000;
+            width: 960px;
+            margin: auto;
+        }
+        .download {
+            float: right;
+            width: 195px;
+            font-size: 15px;
+        }
+        .codesample {
+            float: right;
+            width: 350px;
+            margin-top: -20px;
+            margin-right: -20px;
+        }
+        .description {
+            width: 400px;
+        }
+        pre { margin: 0; }
+        code { font-size: 13px; }
+        code b { color: #A7674B; font-weight: normal; }
+        code .kw { color: #4F8949; }
+        code .s { color: #D15D98; }
+        code .c { color: #AAAAAA; }
+    </style>
+    </head>
+    
+    <body>
+        <a href="http://github.com/keithamus/R.js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"/>
+        </a>
+        
+        <div id="container">
+            
+            <div class="download">
+                <a href="http://github.com/keithamus/R.js/zipball/master" class="img">
+                    <img border="0" width="90" src="http://github.com/images/modules/download/zip.png">
+                </a>
+                <a href="http://github.com/keithamus/R.js/tarball/master" class="img">
+                    <img border="0" width="90" src="http://github.com/images/modules/download/tar.png">
+                </a>
+                <p>
+                    Download the <a href="http://github.com/keithamus/R.js/zipball/master">zip</a> or
+                    <a href="http://github.com/keithamus/R.js/tarball/master">tar</a>, or you can add
+                    the <a href="git://github.com/keithamus/R.js.git">git repository</a> to your project.
+                </p>
+            </div>
+          
+            <h1>
+                <a href="http://github.com/keithamus/R.js"><b class="r">R</b>.js</a> -
+                i18n for JavaScript
+            </h1>
+            
+            <div class="codesample">
+                <h2>Browser</h2>
+                <h6>In your HTML</h6>
+<!--
+        Code start
+-->
+                <pre><code class="html">
+<b>&lt;</b><b class="kw">script</b> type<b>=</b>&quot;<b class="s">text/javascript</b>&quot; src<b>=</b>&quot;<b class="s">my/project/R.js</b>&quot;<b>&gt;</b><b>&lt;</b>/<b class="kw">script</b><b>&gt;</b>
+<b>&lt;</b><b class="kw">script</b> type<b>=</b>&quot;<b class="s">text/javascript</b>&quot;<b>&gt;</b>
+    <b class="kw">R.registerLocale</b><b>(</b>&apos;<b class="s">en-GB</b>&apos;<b>, {</b>
+        <b class="c">// English (Source)    // Translated String</b>
+        &apos;<b class="s">A Translated String</b>&apos;: &apos;<b class="s">A Translated String</b>&apos;<b>,</b>
+    <b>});</b>
+    <b class="kw">R.registerLocale</b><b>(</b>&apos;<b class="s">fr</b>&apos;<b>, {</b>
+        <b class="c">// English (Source)    // Translated String</b>
+        &apos;<b class="s">A Translated String</b>&apos;<b>:</b> &apos;<b class="s">Une cha&icirc;ne traduite</b>&apos;<b>,</b>
+    <b>});</b>
+<b>&lt;</b>/<b class="kw">script</b><b>&gt;</b>
+<b>&lt;</b><b class="kw">script</b> type<b>=</b>&quot;<b class="s">text/javascript</b>&quot;<b>&gt;</b>
+    <b class="kw">var h1</b> <b>=</b> <b class="kw">document.createElement</b><b>(</b>'<b class="s">h1</b>'<b>);</b>
+    <b class="kw">h1.innerHTML</b> = <b class="kw">R</b><b>(</b>'<b class="s">A Translated String</b>'<b>);</b> 
+<b>&lt;</b>/<b class="kw">script</b><b>&gt;</b>
+                </pre></code>
+<!--
+        Code end
+-->
+                
+                <h2>Node.JS</h2>
+                <h6>In your App</h6>
+<!--
+        Code start
+-->
+                <code class="js"><pre>
+<b class="kw">var R</b> <b>=</b> <b class="kw">require</b><b>(</b>'<b class="s">R.js</b>'<b>).</b><b class="kw">R</b><b>;</b>
+<b class="kw">var express</b> <b>=</b> <b class="kw">require</b><b>(</b>'<b class="s">express</b>'<b>);</b>
+<b class="kw">var app</b> <b>=</b> <b class="kw">express.createServer</b><b>();</b>
 
-  <title>keithamus/R.js @ GitHub</title>
+<b class="kw">R.registerLocale</b><b>(</b>&apos;<b class="s">en-GB</b>&apos;<b>, {</b>
+    <b class="c">// English (Source)    // Translated String</b>
+    &apos;<b class="s">A Translated String</b>&apos;: &apos;<b class="s">A Translated String</b>&apos;<b>,</b>
+<b>});</b>
+<b class="kw">R.registerLocale</b><b>(</b>&apos;<b class="s">fr</b>&apos;<b>, {</b>
+    <b class="c">// English (Source)    // Translated String</b>
+    &apos;<b class="s">A Translated String</b>&apos;<b>:</b> &apos;<b class="s">Une cha&icirc;ne traduite</b>&apos;<b>,</b>
+<b>});</b>
 
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #c60165;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #39fe9a; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #39fe9a; }
-    h3 { text-align: center; color: #39fe9a; }
-    a { color: #39fe9a; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-</head>
+<b class="kw">app.get</b><b>(</b>'<b class="s">/</b>'<b>,</b> <b class="kw">function</b><b>(</b><b class="kw">req</b><b>,</b> <b class="kw">res</b><b>) {</b>
+    <b class="kw">response.send</b><b>(</b>'<b class="s">&lt;h1&gt;</b>'
+        <b>+</b> <b class="kw">R</b><b>(</b>'<b class="s">A Translated String</b>'<b>)</b>
+        <b>+</b> '<b class="s">&lt;/h1&gt;</b>'
+    <b>);</b>
+<b>});</b>
+                </pre></code>
+<!--
+        Code end
+-->
 
-<body>
-  <a href="http://github.com/keithamus/R.js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-
-  <div id="container">
-
-    <div class="download">
-      <a href="http://github.com/keithamus/R.js/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/keithamus/R.js/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="http://github.com/keithamus/R.js">R.js</a>
-      <span class="small">by <a href="http://github.com/keithamus">keithamus</a></span></h1>
-
-    <div class="description">
-      Internationalisation Library for Javascript
-    </div>
-
-    <p>R.js is a simple i18n framework for Javascript, using CommonJS. R.js should work in both browsers, and on Node.js, providing internationalisation capabilities to both.
-
-R.js is tiny, at less than 900 bytes minified and gzipped (<2kb minified). R.js has no dependencies, but can be used easily with any other libraries you wish. R.js binds itself to window.R, or global.R on the server side.
-
-Soon, R.js will be able to convert from XLIFF format, into R.js files, which can be easily compacted with R.js to provide one single small file for all your i18n needs.</p><h2>Install</h2>
-<p>R.js can be installed as an ender package (`ender build R.js`) or just included as a normal javascript file.</p>
-<h2>License</h2>
-<p>R.js is licensed under MIT. To see more license information, please visit http://www.opensource.org/licenses/mit-license.php</p>
-<h2>Authors</h2>
-<p>Keith Cirkel (rjs@keithcirkel.co.uk)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Keith Cirkel (rjs@keithcirkel.co.uk)<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/keithamus/R.js/zipball/master">zip</a> or
-      <a href="http://github.com/keithamus/R.js/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/keithamus/R.js</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/keithamus/R.js">keithamus/R.js</a>
-    </div>
-
-  </div>
-
-  <script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-25890430-1");
-pageTracker._trackPageview();
-} catch(err) {}</script>
-</body>
+            </div>
+          
+            <div class="description">
+                <h2>What?</h2>
+                <p>
+                    <b class="r">R</b>.js is a simple, lightweight (<span title="(minified and
+                    gzipped)">less than 1kb</span>), internationalisation library for JavaScript, for
+                    the browser, or server. <b class="r">R</b>.js has no dependencies, it works well
+                    with any other libraries you wish to use, such as <a
+                    href="http://jquery.com">jQuery</a>.
+                </p>
+                <p>
+                    On the browser, it offers a way of getting i18n on your JavaScript layer, which is
+                    great for frontend-ony apps, such as a Chrome App or heavy JavaScript app. It even
+                    has a special support bridge for <a href="http://ender.no.de/">ender</a> to be
+                    used as an ender module (`<code><b class="kw">ender build</b> <b class="s">R.js</b></code>`).
+                </p>
+                <p>
+                    On the server, thanks to the CommonJS compatibility, it becomes an easily
+                    includable versatile i18n tool for any application you have running on NodeJS or
+                    similar.
+                </p>
+                <p>
+                    <b class="r">R</b>.js is fully tested using <a
+                    href="http://docs.jquery.com/Qunit">QUnit</a>, the tests can be seen
+                    <a href="test/index.html">here</a>
+                </p>
+                <p>
+                    <b class="r">R</b>.js is licensed under MIT. To see more license information, please visit
+                    <a href="http://www.opensource.org/licenses/mit-license.php">http://www.opensource.org/licenses/mit-license.php</a>
+                </p>
+            </div>
+            
+            <div class="description">
+                <h2>How?</h2>
+                <p>
+                    <b class="r">R</b>.js is super easy to use, you can simply include <b
+                    class="r">R</b>.js, and a translations file, then change all static strings to
+                    use
+                </p>
+            </div>
+            
+            <div class="description">
+                <h2>Who?</h2>
+                <p>
+                    <img src="keithamus.jpg" style="float:left;margin-right: 10px;">
+                    <b class="r">R</b>.js is made by me, <b class="r">Keithamus</b>. Check out:<br>
+                        my <a href="http://github.com/keithamus">other GitHub projects</a><br>
+                        my <a href="http://keithcirkel.co.uk">website</a><br>
+                        my <a href="http://twitter.com/keithamus">twitter</a> page<br>
+                </p>
+                <br style="clear: both">
+            </div>
+            
+        </div>
+    
+        <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+            try {
+            var pageTracker = _gat._getTracker("UA-25890430-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+        </script>
+    </body>
 </html>
