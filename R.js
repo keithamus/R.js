@@ -35,14 +35,17 @@
  *
  */
 (function (exports) {
-    var oldR = exports.R, eR,
-        R = {
+    var oldR = exports.R
+    ,   inited = false
+    ,   eR
+    ,   R = {
         
         init: function (lang) {
             lang = lang || typeof navigator !== "undefined" ? navigator.language : 'en-GB';
             //Initialise some variables.
             eR.locales = {};
             eR.navLang = lang;
+            inited = true;
         },
         
         slice: function (a) {
@@ -150,9 +153,7 @@
      */
     eR = function (id, variables) {
         // If we haven't initialised our variables etc, then do so.
-        if (!eR.lang) {
-            R.init();
-        }
+        if (!inited) R.init();
         
         if (arguments.length > 1) {
             
@@ -177,9 +178,8 @@
      */
     eR.registerLocale = function (locale, object) {
         //If we haven't initialised our variables etc, then do so.
-        if (!eR.lang) {
-            R.init();
-        }
+        if (!inited) R.init();
+        
         //Throw the object we've been given into locales.
         eR.locales[locale] = object;
         eR.setLocale(eR.navlang);
@@ -203,9 +203,8 @@
      */
     eR.setLocale = function (locale, force) {
         //If we haven't initialised our variables etc, then do so.
-        if (!eR.lang) {
-            R.init();
-        }
+        if (!inited) R.init();
+        
         if (force) {
             eR.lang = locale;
             return eR;
