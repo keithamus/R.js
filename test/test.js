@@ -69,7 +69,7 @@ module('R', {
     
 });
 
-test('returning strings with no args', function () { 
+test('returning strings with no args', function () {
     equal(R('sampleString'), 'A sample string');
 });
 
@@ -82,7 +82,7 @@ test('returning strings with 1 integer', function () {
     equal(R('withInteger', { i: [3] }), 'A sample string with 3 integers');
 });
 
-test('returning strings with no many integers', function () { 
+test('returning strings with many integers', function () {
     equal(R('withManyIntegers'), '%i sample strings with %i integers');
     equal(R('withManyIntegers', 15), '15 sample strings with 15 integers');
     equal(R('withManyIntegers', 2, 1), '2 sample strings with 1 integers');
@@ -91,7 +91,7 @@ test('returning strings with no many integers', function () {
     equal(R('withManyIntegers', { i: 2 }), '2 sample strings with 2 integers');
 });
    
-test('returning strings with 1 string', function () {  
+test('returning strings with 1 string', function () {
     equal(R('withString'), 'A sample %s');
     equal(R('withString', 'string'), 'A sample string');
     equal(R('withString', ['document']), 'A sample document');
@@ -99,7 +99,7 @@ test('returning strings with 1 string', function () {
     equal(R('withString', { s: ['string'] }), 'A sample string');
 });
 
-test('returning strings with many strings', function () {  
+test('returning strings with many strings', function () {
     equal(R('withManyStrings'), 'A sample %s with many %s');
     equal(R('withManyStrings', 'bar'), 'A sample bar with many bar');
     equal(R('withManyStrings', 'string', 'strings'), 'A sample string with many strings');
@@ -107,20 +107,20 @@ test('returning strings with many strings', function () {
     equal(R('withManyStrings', { s: ['biz', 'bang'] }), 'A sample biz with many bang');
 });
    
-test('returning strings with 1 named arg', function () {  
+test('returning strings with 1 named arg', function () {
     equal(R('withNamed'), 'A sample %(string)');
     equal(R('withNamed', { string: 'biz' }), 'A sample biz');
     equal(R('withNamed', { string: 'foo' }), 'A sample foo');
 });
    
-test('returning strings with many named args', function () {  
+test('returning strings with many named args', function () {
     equal(R('withManyNamed'), 'A sample %(string) with many %(strings) %(x)');
     equal(R('withManyNamed', { string: 'bar' }), 'A sample bar with many %(strings) %(x)');
     equal(R('withManyNamed', { strings: 'biz', x: 'baz', string: 'foo' }), 'A sample foo with many biz baz');
     equal(R('withManyNamed', { strings: 'biz' }, { x: 'baz', string: 'foo' }), 'A sample foo with many biz baz');
 });
 
-test('returning strings with named args with duplicates', function () {     
+test('returning strings with named args with duplicates', function () {
     equal(R('withManyNamedDuplicates'), 'A sample %(string) with many %(string) %(x)');
     equal(R('withManyNamedDuplicates', { string: 'bar' }), 'A sample bar with many bar %(x)');
     equal(R('withManyNamedDuplicates', { string: 'foo', strings: 'biz', x: 'baz' }), 'A sample foo with many foo baz');
@@ -142,7 +142,7 @@ test('returning strings with mixed strings and ints', function () {
     equal(R('withIntStringMixed', { i: 5 }, { i: 10 }, { s: 'foo' }, 'bar'), '5 sample foo with 10 bar');
 });
     
-test('returning strings with mixed strings, ints and objects', function () {  
+test('returning strings with mixed strings, ints and objects', function () {
     equal(R('withIntStringObjMixed'), '%i sample %(string) with %i %(string) %s');
     equal(R('withIntStringObjMixed', 1), '1 sample %(string) with 1 %(string) %s');
     equal(R('withIntStringObjMixed', 'string'), '%i sample %(string) with %i %(string) string');
@@ -152,6 +152,13 @@ test('returning strings with mixed strings, ints and objects', function () {
     equal(R('withIntStringObjMixed', [1], ['string'], { string: 'test' }), '1 sample test with 1 test string');
     equal(R('withIntStringObjMixed', { i: [1], s: 'bar', string: 'biz' }), '1 sample biz with 1 biz bar');
     equal(R('withIntStringObjMixed', { string: 'test' }, { i: [1] }, { s: 'bar' }), '1 sample test with 1 test bar');
+});
+
+test("Test falsey values are parsed", function () { 
+    equal(R('zero: %i', 0), 'zero: 0', "Expects R('zero: %i', 0) to be 'zero: 0'");
+    equal(R('%i is not %i', 0, 1), '0 is not 1', "Expects R('%i is not %i', 0, 1) to be '0 is not 1'");
+    equal(R('%s is an empty string', ''), ' is an empty string', "Expects R('%s is an empty string', '') to be '0 is an empty string'");
+    equal(R('%i is NaN', NaN), 'NaN is NaN', "Expects R('%i is NaN', NaN) to be 'NaN is NaN'");
 });
 
 test('locale negotiation', function () {
@@ -167,7 +174,7 @@ test('locale negotiation', function () {
     equal(R.lang, 'en-GB', 'Local is en-GB (first preferred language in locale order)');
     
     R.setLocale('da', true);
-    equal(R.lang, 'da', 'Local is da (forced)'); 
+    equal(R.lang, 'da', 'Local is da (forced)');
 });
 
 test('test noConflict', function () {

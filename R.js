@@ -38,10 +38,11 @@
     var oldR = exports.R
     ,   inited = false
     ,   eR
+    ,   undef
     ,   R = {
         
         init: function (lang) {
-            lang = lang || typeof navigator !== "undefined" ? navigator.language : 'en-GB';
+            lang = lang || typeof navigator !== undef ? navigator.language : 'en-GB';
             //Initialise some variables.
             eR.locales = {};
             eR.navLang = lang;
@@ -133,8 +134,8 @@
                 if (types.hasOwnProperty(type)) {
                     tcount = (s.match(new RegExp(types[type], 'g')) || []).length;
                     for (i = 0; i < tcount; ++i) {
-                        replace = a[type][i] || replace || false;
-                        if (replace) {
+                        replace = a[type].hasOwnProperty(i) ? a[type][i] : replace;
+                        if (replace !== undef && replace !== false) {
                             if ((substrstart = s.indexOf(types[type])) >= 0) {
                                 s = s.substr(0, substrstart) + replace + s.substr(substrstart + 2);
                             }
@@ -160,7 +161,7 @@
      * R
      * Take an `id` from the registered locales and return the string including any variables.
      * @param {String} id The ID of the
-     * @param {Mixed} variables 
+     * @param {Mixed} variables
      */
     eR = function (id, variables) {
         // If we haven't initialised our variables etc, then do so.
@@ -205,8 +206,8 @@
     eR.localeOrder = function () {
         eR.preferredLocales = R.slice(arguments);
         return eR.setLocale(eR.lang);
-    },
-    
+    };
+        
     /*
      * R
      * Set the `locale` to a different locale
@@ -238,7 +239,7 @@
     eR.noConflict = function () {
         exports.R = oldR;
         return eR;
-    }
+    };
     
     exports.R = eR;
 
