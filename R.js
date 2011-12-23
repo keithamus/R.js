@@ -80,7 +80,9 @@
         },
         
         parseVariables: function (args, ret) {
-            var i, c, type = R.realTypeOf(args);
+            var i
+            ,   c
+            ,   type = R.realTypeOf(args);
     
             // This is our structure for formatting, numbers go in i, string in s,
             // and the named arguments (i.e %(age)) go in named.
@@ -90,9 +92,9 @@
     
             //Check args to see what type it is, and add to ret appropriately.
             switch (type) {
-                case 'number': ret.i.push(args);           break;
-                case 'string': ret.s.push(args);           break;
-                case 'date': ret.i.push(args.toString());  break;
+                case 'number': ret.i.push(args);             break;
+                case 'string': ret.s.push(args);             break;
+                case 'date':   ret.i.push(args.toString());  break;
                 case 'object':
                     for (i in args) {
                         if (args.hasOwnProperty(i)) {
@@ -116,7 +118,16 @@
         },
 
         format: function (s, a) {
-            var i, replace, tcount, substrstart, type, l, types = {i: '%i', s: '%s'}, tmp = '', t;
+            var i
+            ,   replace
+            ,   tcount
+            ,   substrstart
+            ,   type
+            ,   l
+            ,   types = {i: '%i', s: '%s'}
+            ,   tmp = ''
+            ,   t;
+            
             //First we'll add all integers to the pot, then the strings
             for (type in types) {
                 if (types.hasOwnProperty(type)) {
@@ -224,7 +235,10 @@
         return eR;
     };
     
-    eR.noConflict = function () { exports.R = oldR; return eR; }
+    eR.noConflict = function () {
+        exports.R = oldR;
+        return eR;
+    }
     
     exports.R = eR;
 
