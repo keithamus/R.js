@@ -178,7 +178,7 @@
 
         // Otherwise just send the `variables` var.
         } else {
-            return R.render(id, [variables]);
+            return R.render(id);
         }
     };
     
