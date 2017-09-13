@@ -1,6 +1,8 @@
 R.js
 =====
 
+<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/ygkcNhfZ9nTDeVM6P8LSGn1C/keithamus/R.js'>  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/ygkcNhfZ9nTDeVM6P8LSGn1C/keithamus/R.js.svg' /></a>
+
 R.js is a simple i18n framework for Javascript, using CommonJS. R.js should work in both browsers, and on Node.js, providing internationalisation capabilities to both.
 
 R.js is tiny, at less than 900 bytes minified and gzipped (<2kb minified). R.js has no dependencies, but can be used easily with any other libraries you wish. R.js binds itself to window.R, or global.R on the server side.
