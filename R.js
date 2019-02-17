@@ -39,6 +39,7 @@
     ,   inited = false
     ,   eR
     ,   undef
+    ,   parseRegex = /%(\(([^)]+)\)|([is]))/gm
     ,   R = {
         
         init: function (lang) {
@@ -63,21 +64,20 @@
         },
     
         render: function (id, args) {
-            if (eR.locales && eR.locales.hasOwnProperty(eR.lang)) {
-                if (eR.locales[eR.lang].hasOwnProperty(id)) {
-                    id = eR.locales[eR.lang][id];
-                }
+            var locales = eR.locales,
+                lang = eR.lang;
+
+            if (locales && locales[lang] && locales[lang][id]) {
+                id = locales[lang][id];
             }
             
             // If we've no arguments, let's return
-            if (!args || args.length === 0) {
-                return id;
+            if (args && args.length > 0) {
+                // Ok, we do have args, so lets parse them.
+                return R.format(id, R.parseVariables(args));
             }
     
-            // Ok, we do have args, so lets parse them.
-            args = R.parseVariables(args);
-    
-            return R.format(id, args);
+            return id;
         },
         
         parseVariables: function (args, ret) {
@@ -119,40 +119,26 @@
         },
 
         format: function (s, a) {
-            var i
-            ,   replace
-            ,   tcount
-            ,   substrstart
-            ,   type
-            ,   l
-            ,   types = {i: '%i', s: '%s'}
-            ,   tmp = ''
-            ,   t;
+            var rep = {i : undef, s: undef};
             
-            //First we'll add all integers to the pot, then the strings
-            for (type in types) {
-                if (types.hasOwnProperty(type)) {
-                    tcount = (s.match(new RegExp(types[type], 'g')) || []).length;
-                    for (i = 0; i < tcount; ++i) {
-                        replace = a[type].hasOwnProperty(i) ? a[type][i] : replace;
-                        if (replace !== undef && replace !== false) {
-                            if ((substrstart = s.indexOf(types[type])) >= 0) {
-                                s = s.substr(0, substrstart) + replace + s.substr(substrstart + 2);
-                            }
-                        }
+            return s.replace(parseRegex, function(match, p1, p2) {
+                var replace;
+                // named argument
+                if (p2) {
+                    replace = a.named.hasOwnProperty(p2) ? a.named[p2] : match;
+
+                // %i or %s
+                } else {
+                    replace = a[p1].length ? a[p1].shift() : rep[p1];
+                    if (replace === undef) {
+                        replace = match;
                     }
+                    rep[p1] = replace;
                 }
-                replace = false;
-            }
-    
-            //Now to loop through the named arguments!
-            for (i in a.named) {
-                if (a.named.hasOwnProperty(i)) {
-                    t = new RegExp("%\\(" + i + "\\)", 'g');
-                    s = s.replace(t, a.named[i]);
-                }
-            }
-    
+
+                return replace;
+            });
+
             return s;
         }
     };
@@ -178,7 +164,7 @@
 
         // Otherwise just send the `variables` var.
         } else {
-            return R.render(id, [variables]);
+            return R.render(id);
         }
     };
     
